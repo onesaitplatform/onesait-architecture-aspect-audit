@@ -1,0 +1,10 @@
+.project
+.classpath
+.settings
+
+*.factorypath
+.idea/
+
+JenkinsFile
+settings.xml
+podTemplate.yaml
