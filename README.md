@@ -52,7 +52,7 @@ Here are the annotations we have available:
 	</properties>
 ```
 
-**Propiedades del proyecto**
+**Project Properties**
 
 ```yaml
 audit:
