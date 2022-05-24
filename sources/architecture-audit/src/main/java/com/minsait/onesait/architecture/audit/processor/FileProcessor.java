@@ -44,7 +44,7 @@ public class FileProcessor implements IProcessor<AuditEvent> {
 					StandardOpenOption.CREATE);
 		} catch (IOException e) {
 			log.error("{} Trying to write in a file", e.getMessage());
-			throw new AuditException(e.getMessage(), e.getCause());
+			throw new AuditException(e.getMessage(), e.getCause(), auditProperties.isTransactional());
 		}
 	}
 
