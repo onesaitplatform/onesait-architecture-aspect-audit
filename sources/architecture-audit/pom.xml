@@ -10,9 +10,9 @@
     </parent>
 
     <artifactId>audit-lib</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <name>Audit Library</name>
-    <description>Audit Library to write logs to various destinations</description>
+    <description>Audit Library to write audit to various destinations</description>
     <packaging>jar</packaging>
 
 

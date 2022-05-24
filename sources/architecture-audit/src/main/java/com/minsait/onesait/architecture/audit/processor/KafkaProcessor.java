@@ -28,6 +28,9 @@ public class KafkaProcessor implements IProcessor<AuditEvent> {
 	@Autowired
 	private KafkaTemplate<String, String> kafka;
 
+	@Autowired
+	private ObjectMapper mapper;
+
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
@@ -47,7 +50,6 @@ public class KafkaProcessor implements IProcessor<AuditEvent> {
 	}
 
 	public void send(KafkaEvent event) throws AuditException {
-		ObjectMapper mapper = new ObjectMapper();
 		String json;
 		try {
 			event.setTimestampCreation(new Timestamp(System.currentTimeMillis()));
@@ -55,7 +57,7 @@ public class KafkaProcessor implements IProcessor<AuditEvent> {
 			kafka.send(auditProperties.getDestination().getKafka().getTopic(), json);
 		} catch (JsonProcessingException e) {
 			log.error("{} Error sending data", this.getClass());
-			throw new AuditException(e.getMessage(), e.getCause());
+			throw new AuditException(e.getMessage(), e.getCause(), auditProperties.isTransactional());
 		}
 	}
 

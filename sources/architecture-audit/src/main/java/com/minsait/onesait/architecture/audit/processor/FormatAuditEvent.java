@@ -19,6 +19,9 @@ public class FormatAuditEvent {
 	@Autowired
 	private AuditProperties auditProperties;
 
+	@Autowired
+	private ObjectMapper mapper;
+
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
 	public String format(AuditEvent auditEvent) {
@@ -59,12 +62,11 @@ public class FormatAuditEvent {
 		// TODO check how to show the output of operation
 		if (auditEvent.getOutput() != null) {
 			try {
-				ObjectMapper mapper = new ObjectMapper();
 				Object json = mapper.readValue(auditEvent.getOutput().toString(), Object.class);
 				String outputString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
 				builder.append(outputString);
 			} catch (IOException e) {
-				throw new AuditException(e.getMessage(), e);
+				throw new AuditException(e.getMessage(), e, auditProperties.isTransactional());
 			}
 		}
 

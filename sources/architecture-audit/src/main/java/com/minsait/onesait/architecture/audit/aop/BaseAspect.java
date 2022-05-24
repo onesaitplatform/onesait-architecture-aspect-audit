@@ -79,6 +79,9 @@ public class BaseAspect {
 	@Autowired
 	private AuditProperties properties;
 
+	@Autowired
+	private ObjectMapper mapper;
+
 	private Map<String, Pair<String, Class<? extends AuditEvent>>> beansMap;
 
 	@SuppressWarnings("unchecked")
@@ -128,8 +131,8 @@ public class BaseAspect {
 	}
 
 	/**
-	 * Process an audit event from a joint point and notify all
-	 * {@link IProcessor} of audit.
+	 * Process an audit event from a joint point and notify all {@link IProcessor}
+	 * of audit.
 	 * 
 	 * @param joinPoint Joint point from aspect event
 	 * @see IProcessor
@@ -139,9 +142,8 @@ public class BaseAspect {
 	}
 
 	/**
-	 * Process an audit event from a joint point and notify all
-	 * {@link IProcessor} of audit. Can send the result return of the method
-	 * audit.
+	 * Process an audit event from a joint point and notify all {@link IProcessor}
+	 * of audit. Can send the result return of the method audit.
 	 * 
 	 * @param joinPoint Joint point from aspect event
 	 * @param result    The result return of the method audit. Can be null
@@ -151,8 +153,8 @@ public class BaseAspect {
 	}
 
 	/**
-	 * Process an audit event from a joint point and notify all
-	 * {@link IProcessor} of audit. Used with {@link AfterThrowing}
+	 * Process an audit event from a joint point and notify all {@link IProcessor}
+	 * of audit. Used with {@link AfterThrowing}
 	 * 
 	 * @param joinPoint Joint point from aspect event
 	 * @param exception The exception thrown
@@ -168,12 +170,11 @@ public class BaseAspect {
 		JsonNode output = null;
 
 		if (result != null) {
-			ObjectMapper mapper = new ObjectMapper();
 			try {
 				String json = mapper.writeValueAsString(result);
 				output = mapper.readTree(json);
 			} catch (JsonProcessingException e) {
-				throw new AuditException(e.getMessage(), e);
+				throw new AuditException(e.getMessage(), e, properties.isTransactional());
 			}
 		}
 

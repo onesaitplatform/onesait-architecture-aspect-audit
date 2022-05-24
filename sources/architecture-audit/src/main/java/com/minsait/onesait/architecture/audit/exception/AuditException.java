@@ -1,9 +1,5 @@
 package com.minsait.onesait.architecture.audit.exception;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.minsait.onesait.architecture.audit.AuditProperties;
-
 import lombok.Getter;
 
 public class AuditException extends RuntimeException {
@@ -12,9 +8,6 @@ public class AuditException extends RuntimeException {
 
 	@Getter
 	private String remedialAction;
-
-	@Autowired
-	private AuditProperties properties;
 
 	public AuditException(String message, Throwable cause, String remedialAction) {
 		super(message, cause);
@@ -26,9 +19,9 @@ public class AuditException extends RuntimeException {
 		this.remedialAction = remedialAction;
 	}
 
-	public AuditException(String message, Throwable cause) {
+	public AuditException(String message, Throwable cause, boolean isTransactional) {
 		super(message, cause);
-		if (properties.isTransactional()) {
+		if (isTransactional) {
 			this.remedialAction = "It should be rollback";
 		}
 	}

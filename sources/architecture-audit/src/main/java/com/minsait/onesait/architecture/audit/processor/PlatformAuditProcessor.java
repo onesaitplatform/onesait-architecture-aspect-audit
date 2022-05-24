@@ -38,6 +38,9 @@ public class PlatformAuditProcessor implements IProcessor<AuditEvent> {
 	@Autowired
 	private AuditProperties auditProperties;
 
+	@Autowired
+	private ObjectMapper mapper;
+
 	private static final String HEADER_AUTHORIZATION_KEY = "Authorization";
 	private static final String BEARER_CHECK = "Bearer ";
 
@@ -55,7 +58,7 @@ public class PlatformAuditProcessor implements IProcessor<AuditEvent> {
 		if (accessToken != null && !"".equals(accessToken)) {
 			List<AuditPlatformDTO> auditResult = new ArrayList<>();
 			try {
-				ObjectMapper mapper = new ObjectMapper();
+
 				String jsonString = mapper.writeValueAsString(auditEvent);
 
 				AuditPlatformDTO auditDto = AuditPlatformDTO.builder().message(jsonString)
